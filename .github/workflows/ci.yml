@@ -46,7 +46,7 @@ jobs:
           - elixir: "1.13.3"
             otp: "24.3"
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     steps:
       - name: Checkout
