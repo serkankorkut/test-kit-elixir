@@ -69,7 +69,7 @@ jobs:
           test_format: JSON
           test_framework: PYTEST
           test_path: _build/test/lib/joken/test-junit-report.xml
-          cli_version: 1.2.4-testkit-elixir
+          cli_version: 1.2.5-testkit-elixir
 
       - name: Restore deps and _build cache
         uses: actions/cache@v2
