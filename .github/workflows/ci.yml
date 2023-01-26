@@ -52,22 +52,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+     - name: Thundra Registry
+        run: |
+          npm config set registry ${{ secrets.THUNDRA_REGISTRY }}
+          npm config set _auth ${{ secrets.THUNDRA_REGISTRY_AUTH }}
+
       - name: Set up Elixir
         uses: erlef/setup-beam@v1
         with:
           elixir-version: ${{ matrix.elixir }}
           otp-version: ${{ matrix.otp }}
-      - name: Thundra Registry
-        run: |
-          npm config set registry ${{ secrets.THUNDRA_REGISTRY }}
-          npm config set _auth ${{ secrets.THUNDRA_REGISTRY_AUTH }}
+      
       - name: Analyze Test and/or Coverage Results
         uses: runforesight/foresight-test-kit-action@v1
         if: ${{ always() }}
         with:
           api_key: ${{ secrets.APIKEY }}
           test_format: JSON
-          test_framework: PYTEST
+          test_framework: ELIXIR
           test_path: _build/test/lib/joken/test-junit-report.xml
           cli_version: 1.2.5-testkit-elixir
 
