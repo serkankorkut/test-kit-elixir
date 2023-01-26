@@ -2,9 +2,10 @@ name: CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
+  workflow_dispatch:
 
 jobs:
   check_duplicate_runs:
@@ -31,6 +32,8 @@ jobs:
 
     env:
       FORCE_COLOR: 1
+      FORESIGHT_UPLOADER_SIGNER_URL: https://upload.service.runforesight.me
+      FORESIGHT_LOG_LEVEL: debug
 
     strategy:
       fail-fast: false
@@ -46,71 +49,84 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    - name: Set up Elixir
-      uses: erlef/setup-beam@v1
-      with:
-        elixir-version: ${{ matrix.elixir }}
-        otp-version: ${{ matrix.otp }}
+      - name: Set up Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: ${{ matrix.elixir }}
+          otp-version: ${{ matrix.otp }}
+      - name: Thundra Registry
+        run: |
+          npm config set registry ${{ secrets.THUNDRA_REGISTRY }}
+          npm config set _auth ${{ secrets.THUNDRA_REGISTRY_AUTH }}
+      - name: Analyze Test and/or Coverage Results
+        uses: runforesight/foresight-test-kit-action@v1
+        if: ${{ always() }}
+        with:
+          api_key: ${{ secrets.APIKEY }}
+          test_format: JSON
+          test_framework: PYTEST
+          test_path: _build/test/lib/joken/test-junit-report.xml
+          #cli_version: 123.457.999
 
-    - name: Restore deps and _build cache
-      uses: actions/cache@v2
-      with:
-        path: |
-          deps
-          _build
-        key: deps-${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('**/mix.lock') }}-git-${{ github.sha }}
-        restore-keys: |
-          deps-${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('**/mix.lock') }}
-          deps-${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-
+      - name: Restore deps and _build cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            deps
+            _build
+          key: deps-${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('**/mix.lock') }}-git-${{ github.sha }}
+          restore-keys: |
+            deps-${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('**/mix.lock') }}
+            deps-${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-
 
-    - name: Create dializer plts path
-      run: mkdir -p priv/plts
+      - name: Create dializer plts path
+        run: mkdir -p priv/plts
 
-    - name: Restore plts cache
-      uses: actions/cache@v2
-      with:
-        path: priv/plts
-        key: plts-${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('**/mix.lock') }}-${{ github.sha }}
-        restore-keys: |
-          plts-${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('**/mix.lock') }}
-          plts-${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-
+      - name: Restore plts cache
+        uses: actions/cache@v2
+        with:
+          path: priv/plts
+          key: plts-${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('**/mix.lock') }}-${{ github.sha }}
+          restore-keys: |
+            plts-${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('**/mix.lock') }}
+            plts-${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-
 
-    - name: Install dependencies
-      run: mix deps.get --only test
+      - name: Install dependencies
+        run: mix deps.get --only test
 
-    - name: Check source code format
-      run: mix format --check-formatted
+      - name: Check source code format
+        run: mix format --check-formatted
 
-    - name: Perform source code static analysis
-      run: mix credo --strict
-      env:
-        MIX_ENV: test
+      - name: Perform source code static analysis
+        run: mix credo --strict
+        env:
+          MIX_ENV: test
 
-    - name: Remove compiled application files
-      run: mix clean
+      - name: Remove compiled application files
+        run: mix clean
 
-    - name: Compile dependencies
-      run: mix compile
-      env:
-        MIX_ENV: test
+      - name: Compile dependencies
+        run: mix compile
+        env:
+          MIX_ENV: test
 
-    - name: Compile & lint dependencies
-      run: mix compile --warnings-as-errors
-      env:
-        MIX_ENV: test
+      - name: Compile & lint dependencies
+        run: mix compile --warnings-as-errors
+        env:
+          MIX_ENV: test
 
-    - name: Run tests
-      run: mix coveralls.github
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run tests
+        run: mix coveralls.github
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Run dialyzer
-      run: mix dialyzer
-      env:
-        MIX_ENV: test
+      - name: Run dialyzer
+        run: mix dialyzer
+        env:
+          MIX_ENV: test
 
   all_done:
     name: Tests done
@@ -119,5 +135,5 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: All done
-      run: echo '+'
+      - name: All done
+        run: echo '+'
