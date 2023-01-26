@@ -1,0 +1,14 @@
+{
+  "name": "nexus-trial",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@runforesight/foresight-cli": "^1.2.5-testkit-elixir"
+  }
+}

@@ -52,7 +52,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-     - name: Thundra Registry
+      - name: Thundra Registry
         run: |
           npm config set registry ${{ secrets.THUNDRA_REGISTRY }}
           npm config set _auth ${{ secrets.THUNDRA_REGISTRY_AUTH }}
@@ -62,7 +62,7 @@ jobs:
         with:
           elixir-version: ${{ matrix.elixir }}
           otp-version: ${{ matrix.otp }}
-      
+
       - name: Analyze Test and/or Coverage Results
         uses: runforesight/foresight-test-kit-action@v1
         if: ${{ always() }}
