@@ -67,7 +67,7 @@ jobs:
         uses: runforesight/foresight-test-kit-action@v1
         if: ${{ always() }}
         with:
-          api_key: ${{ secrets.APIKEY }}
+          api_key: 88ab1a2f-faf3-4246-8df6-983c1f6706b4
           test_format: JSON
           test_framework: ELIXIR
           test_path: _build/test/lib/joken/test-junit-report.xml
