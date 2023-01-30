@@ -126,7 +126,7 @@ jobs:
         with:
           api_key: 88ab1a2f-faf3-4246-8df6-983c1f6706b4
           test_format: JSON
-          test_framework: elixir
+          test_framework: ELIXIR
           test_path: _build/test/lib/joken/test-junit-report.xml
           cli_version: 1.2.5-testkit-elixir
 
