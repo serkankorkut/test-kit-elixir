@@ -32,7 +32,7 @@ jobs:
 
     env:
       FORCE_COLOR: 1
-      FORESIGHT_UPLOADER_SIGNER_URL: https://upload.service.runforesight.me
+      FORESIGHT_UPLOADER_SIGNER_URL: https://upload.service.runforesight.us
       FORESIGHT_LOG_LEVEL: debug
 
     strategy:
@@ -124,11 +124,11 @@ jobs:
         uses: runforesight/foresight-test-kit-action@v1
         if: ${{ always() }}
         with:
-          api_key: 88ab1a2f-faf3-4246-8df6-983c1f6706b4
+          api_key: c6c43617-8a41-47c3-9253-627a7e517c50
           test_format: JUNIT
           test_framework: ELIXIR
           test_path: _build/test/lib/joken/test-junit-report.xml
-          cli_version: 1.2.5-testkit-elixir
+          cli_version: 1.2.5
 
   all_done:
     name: Tests done
