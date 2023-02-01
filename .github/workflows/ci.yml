@@ -32,7 +32,7 @@ jobs:
 
     env:
       FORCE_COLOR: 1
-      FORESIGHT_UPLOADER_SIGNER_URL: https://upload.service.runforesight.us
+#       FORESIGHT_UPLOADER_SIGNER_URL: https://upload.service.runforesight.us
       FORESIGHT_LOG_LEVEL: debug
 
     strategy:
