@@ -24,7 +24,7 @@ defmodule Joken.Config.Test do
     end
 
     test "generates exp, iss, iat, nbf claims" do
-      assert true == false
+      assert Config.default_claims() |> Map.keys() == ["aud", "exp", "iat", "iss", "jti", "nbf"]
     end
 
     test "can customize exp duration" do
