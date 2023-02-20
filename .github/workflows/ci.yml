@@ -120,7 +120,7 @@ jobs:
         env:
           MIX_ENV: test
 
-      - name: Run dialyzer
+      - name: Flaky test simulation
         run: ./flaky-test-simulation.sh
         env:
           MIX_ENV: test
