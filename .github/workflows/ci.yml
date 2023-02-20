@@ -133,8 +133,6 @@ jobs:
           test_format: JUNIT
           test_framework: ELIXIR
           test_path: _build/test/lib/joken/*.xml
-          coverage_format: LCOV/TXT
-          coverage_path: cover/lcov.info
 #           cli_version: 1.2.6
 
   all_done:
