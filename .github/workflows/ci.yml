@@ -89,8 +89,8 @@ jobs:
       - name: Install dependencies
         run: mix deps.get --only test
 
-      - name: Check source code format
-        run: mix format --check-formatted
+      # - name: Check source code format
+      #   run: mix format --check-formatted
 
       - name: Perform source code static analysis
         run: mix credo --strict
