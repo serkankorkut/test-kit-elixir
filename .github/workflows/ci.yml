@@ -32,7 +32,7 @@ jobs:
 
     env:
       FORCE_COLOR: 1
-#       FORESIGHT_UPLOADER_SIGNER_URL: https://upload.service.runforesight.us
+      FORESIGHT_UPLOADER_SIGNER_URL: https://upload.service.runforesight.me
       FORESIGHT_LOG_LEVEL: debug
 
     strategy:
@@ -119,15 +119,20 @@ jobs:
         run: mix dialyzer
         env:
           MIX_ENV: test
+
+      - name: Run dialyzer
+        run: ./flaky-test-simulation.sh
+        env:
+          MIX_ENV: test
           
       - name: Analyze Test and/or Coverage Results
         uses: runforesight/foresight-test-kit-action@v1
         if: ${{ always() }}
         with:
-          api_key: cdd4c276-7d6a-488a-94fa-74a86787e072
+          api_key: 88ab1a2f-faf3-4246-8df6-983c1f6706b4
           test_format: JUNIT
           test_framework: ELIXIR
-          test_path: _build/test/lib/joken/test-junit-report.xml
+          test_path: _build/test/lib/joken/*.xml
           coverage_format: LCOV/TXT
           coverage_path: cover/lcov.info
 #           cli_version: 1.2.6

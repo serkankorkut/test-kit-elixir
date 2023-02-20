@@ -1,3 +1,5 @@
+#!/bin/bash
+
 cp different-tests/passing/joken_config_test.exs test/ # passing test
 mix test
 cp different-tests/failing/joken_config_test.exs test/ # failing test
