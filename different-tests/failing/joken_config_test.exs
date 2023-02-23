@@ -96,9 +96,7 @@ defmodule Joken.Config.Test do
     end
 
     test "can switch default jti generation function" do
-      jti_claim = Config.default_claims(generate_jti: fn -> "Hi" end)["jti"]
-
-      assert jti_claim.generate.() == "Hi"
+            assert true == false
     end
 
     test "raises with invalid data types" do
