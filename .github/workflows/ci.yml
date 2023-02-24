@@ -129,7 +129,7 @@ jobs:
         uses: runforesight/foresight-test-kit-action@v1
         if: ${{ always() }}
         with:
-          api_key: 88ab1a2f-faf3-4246-8df6-983c1f6706b4
+          api_key: 8318e893-4b4c-4eed-9a30-19558345b82c
           test_format: JUNIT
           test_framework: ELIXIR
           test_path: _build/test/lib/joken/*.xml
